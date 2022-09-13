@@ -10,10 +10,11 @@ import enTranslations from '@shopify/polaris/locales/en.json';
 import { AppProvider } from "@shopify/polaris";
 import Header from "./pages/Header";
 import Footer from "./pages/Footer";
-import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
+import Home from "./pages/Home";
+import Adduser from "./pages/Adduser";
 function App() {
   return (
     <AppProvider i18n={enTranslations}>
@@ -22,7 +23,8 @@ function App() {
         <Header />
         <div className="container">
         <Routes>
-            <Route path="/" element={<Users />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/add" element={<Adduser name="add" />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/dashboard" element={<Dashboard />} />

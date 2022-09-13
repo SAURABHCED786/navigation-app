@@ -6,7 +6,7 @@ function Login() {
     <div>
       <LoginForm
         onSubmit={() => {
-          navigate('/user/dashboard');
+          navigate('/add/dashboard');
         }}
       />
     </div>
