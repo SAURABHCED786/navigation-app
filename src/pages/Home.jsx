@@ -1,11 +1,13 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Card, Layout, Page, Grid } from '@shopify/polaris';
+import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 function Home() {
   const navigate = useNavigate();
   const location = useLocation();
   const [userData, setUserdata] = useState();
-
+  const [deletedmsg, setDeletedMsg] = useState(false);
   useEffect(() => {
     const locData = localStorage.getItem("allUserInfo")
     if (location.state) {
@@ -44,6 +46,7 @@ function Home() {
         const tmp = []
         userData.forEach(localDelusr => {
           if (localDelusr.id == delId) {
+            setDeletedMsg(true);
             return
           }
           tmp.push(localDelusr);
@@ -55,58 +58,68 @@ function Home() {
   }
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Company</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userData &&
-            userData.map((item, index) => {
-              return (
-                <tr id={index}>
-                  <td className='row-data'>
-                    {item.id}
-                  </td>
-                  <td className='row-data'>
-                    {item.username}
-                  </td>
-                  <td className='row-data'>
-                    {item.email}
-                  </td>
-                  <td className='row-data'>
-                    {item.phone}
-                  </td>
-                  <td className='row-data'>
-                    {item.company.name}
-                  </td>
-                  <td>
-                    <button className='editBtn btn btn-primary'
-                      onClick={(event) => { showData(event) }} style={{ fontSize: "14px" }}>
-                      <i className="fa fa-pencil-square" />
-                    </button>
-                    <button className='delBtn btn btn-danger'
-                      onClick={(event) => deleteData(event)}
-                      style={{ fontSize: "14px" }}>
-                      <i className="fa fa-trash" />
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td style={{ textAlign: "center", padding: "16px" }} colSpan={5}>Message</td>
-          </tr>
-        </tfoot>
-      </table>
+      <Page>
+        <Grid>
+          <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 12, xl: 12 }}>
+            <Layout>
+              <Card>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Phone Number</th>
+                      <th>Company</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userData &&
+                      userData.map((item, index) => {
+                        return (
+                          <tr id={index}>
+                            <td className='row-data'>
+                              {item.id}
+                            </td>
+                            <td className='row-data'>
+                              {item.username}
+                            </td>
+                            <td className='row-data'>
+                              {item.email}
+                            </td>
+                            <td className='row-data'>
+                              {item.phone}
+                            </td>
+                            <td className='row-data'>
+                              {item.company.name}
+                            </td>
+                            <td>
+                              <button className='editBtn btn btn-primary'
+                                onClick={(event) => { showData(event) }} style={{ fontSize: "14px" }}>
+                                <i className="fa fa-pencil-square" />
+                              </button>
+                              <button className='delBtn btn btn-danger'
+                                onClick={(event) => deleteData(event)}
+                                style={{ fontSize: "14px" }}>
+                                <i className="fa fa-trash" />
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td style={{ textAlign: "center", padding: "16px", color: "red" }} colSpan={5}><b>{deletedmsg ? "Deleted" : ""}</b></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </Card>
+            </Layout>
+          </Grid.Cell>
+        </Grid>
+      </Page>
     </>
   );
 }

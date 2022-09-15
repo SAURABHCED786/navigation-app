@@ -57,33 +57,30 @@ function Adduser(props) {
       })
     }
   }, [])
-
   const handleSubmit = (e) => {
     e.preventDefault();
     //validation
     if (!validUserName.test(username)) {
       setUsernameErr(true);
-    }else{
+    } else {
       setUsernameErr(false)
     }
     if (!validEmail.test(email)) {
       setEmailErr(true);
-    }else{
+    } else {
       setEmailErr(false);
     }
     if (!validMobile.test(phone)) {
       setMobNoErr(true);
-    }else{
+    } else {
       setMobNoErr(false);
     }
     if (!validCompany.test(company)) {
       setCompanyErr(true);
-    }else{
+    } else {
       setCompanyErr(false);
     }
-
     if (validUserName.test(username) && validEmail.test(email) && validMobile.test(phone) && validCompany.test(company)) {
-
       //edit data    
       if (location.state != null) {
         if (location.state.id === userid) {
@@ -105,7 +102,8 @@ function Adduser(props) {
       }
       //Add Data
       if (location.state == null) {
-        const NextId = localData.length;
+        //const NextId = localData.length;
+        const NextId = Math.floor(Math.random() * 999) + 1;
         const addUrs = { id: NextId + 1, username: username, email: email, phone: phone, company: { name: company } }
         const tmp = []
         localData.forEach(localusr => {
@@ -116,7 +114,6 @@ function Adduser(props) {
       }
       navigate("/", { state: true });
     }
-
   }
   return (
     <div className="UserPage">
@@ -130,7 +127,6 @@ function Adduser(props) {
                 {mobleNoErr ? <p>Your Mobile Number is invalid</p> : " "}
                 {companyErr ? <p>Your Company Name is invalid</p> : " "}
                 {console.log(emailErr, " ", usernaemErr, " ", mobleNoErr, " ", companyErr)}
-
                 <div style={{ padding: "20px" }}>
                   <FormLayout>
                     <TextField
@@ -186,5 +182,4 @@ function Adduser(props) {
     </div>
   );
 }
-
 export default Adduser
