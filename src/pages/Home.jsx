@@ -31,7 +31,7 @@ function Home() {
     let email = data[2].innerHTML;
     let phno = data[3].innerHTML;
     let company = data[4].innerHTML;
-    navigate("/add", { state: { id: id, username: username, email: email, phno: phno, company: company } });
+    navigate("/add", { state: { id: id, username: username, email: email, phno: phno, company: company }, Edit: "Edit" });
   }
   // Delete User Data
   function deleteData(event) {

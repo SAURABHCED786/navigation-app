@@ -2,12 +2,17 @@ import React, { useEffect } from 'react'
 import { Button, Card, FormLayout, Layout, Page, Grid, TextField } from '@shopify/polaris';
 import { useState, useCallback } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
-function Adduser() {
+import { validUserName, validEmail, validMobile, validCompany } from './regex'
+function Adduser(props) {
+  const [emailErr, setEmailErr] = useState(false);
+  const [usernaemErr, setUsernameErr] = useState(false);
+  const [mobleNoErr, setMobNoErr] = useState(false);
+  const [companyErr, setCompanyErr] = useState(false);
   const [localData, setlocalData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const myUserinfo = JSON.parse(localStorage.getItem("allUserInfo"));
-
+  const [EditStatus, setEditStatus] = useState(false);
   useEffect(() => {
     setlocalData([...myUserinfo])
   }, []);
@@ -40,6 +45,7 @@ function Adduser() {
 
   useEffect(() => {
     if (location.state != null) {
+      setEditStatus(true)
       myUserinfo.map(usrInfo => {
         if (location.state.id == usrInfo.id) {
           setUserId(location.state.id);
@@ -54,6 +60,20 @@ function Adduser() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //validation
+    if (!validUserName.test(username)) {
+      setUsernameErr(true);
+    }
+    if (!validEmail.test(email)) {
+      setEmailErr(true);
+    }
+    if (!validMobile.test(phone)) {
+      setMobNoErr(true);
+    }
+    if (!validCompany.test(company)) {
+      setCompanyErr(true);
+    }
+
     //edit data    
     if (location.state != null) {
       if (location.state.id === userid) {
@@ -84,7 +104,7 @@ function Adduser() {
       tmp.push(addUrs)
       localStorage.setItem("allUserInfo", JSON.stringify(tmp));
     }
-    navigate("/", { state: true });
+    //navigate("/", { state: true });
   }
   return (
     <div className="UserPage">
@@ -93,6 +113,12 @@ function Adduser() {
           <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 12, xl: 12 }}>
             <Layout>
               <Card>
+                {emailErr ? <p>Your email is invalid</p> : ""}
+                {usernaemErr ? <p>Your username is invalid</p> : " "}
+                {mobleNoErr ? <p>Your Mobile Number is invalid</p> : " "}
+                {companyErr ? <p>Your Company Name is invalid</p> : " "}
+                {console.log(emailErr, " ", usernaemErr, " ", mobleNoErr, " ", companyErr)}
+
                 <div style={{ padding: "20px" }}>
                   <FormLayout>
                     <TextField
@@ -137,7 +163,7 @@ function Adduser() {
                         </span>
                       }
                     />
-                    <Button primary size="slim" onClick={handleSubmit}>Add User</Button>
+                    <Button primary size="slim" onClick={handleSubmit}>{EditStatus ? "Edit" : props.name}</Button>
                   </FormLayout>
                 </div>
               </Card>

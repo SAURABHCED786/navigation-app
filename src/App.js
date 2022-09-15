@@ -18,21 +18,21 @@ import Adduser from "./pages/Adduser";
 function App() {
   return (
     <AppProvider i18n={enTranslations}>
-    <div className="App">
-      <Router>
-        <Header />
-        <div className="container">
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/add" element={<Adduser />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-        </div>
-        <Footer />
-      </Router>
-    </div>
+      <div className="App">
+        <Router>
+          <Header />
+          <div className="container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/add" element={<Adduser name="Add" />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+          </div>
+          <Footer />
+        </Router>
+      </div>
     </AppProvider>
   );
 }
