@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
-import UseFetch from "./useFetch";
 import '../App.css';
 function Home() {
   const navigate = useNavigate();
@@ -8,14 +7,18 @@ function Home() {
   const [userData, setUserdata] = useState();
 
   useEffect(() => {
+    const locData=localStorage.getItem("allUserInfo")
     if (location.state) {
+      setUserdata(JSON.parse(locData));
       return
     }
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
-      .then((data) => setUserdata(data));
+      .then((data) => {
+        setUserdata(data)
+        localStorage.setItem("allUserInfo", JSON.stringify(data));
+      });
   }, [])
-
   function showData(event) {
     var rowId = event.target.parentNode.parentNode.id;
     //this gives id of tr whose button was clicked
@@ -28,11 +31,6 @@ function Home() {
     let phno = data[3].innerHTML;
     let company = data[4].innerHTML;
     navigate("/add", { state: { id: id, username: username, email: email, phno: phno, company: company } });
-    // alert(
-    //   "ID: " + id + "\nUsername: " + username +
-    //   "\nEmail: " + email + "\nPhone No: " + phno + "\nComapny: " + company
-    // );
-    // openUserDetails(tmp);
   }
   return (
     <>
@@ -90,5 +88,4 @@ function Home() {
     </>
   );
 }
-
 export default Home

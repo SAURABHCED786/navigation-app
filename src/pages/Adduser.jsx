@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react'
 import { Button, Card, FormLayout, Layout, Page, Grid, TextField } from '@shopify/polaris';
 import { useState, useCallback } from 'react';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-function Adduser(props) {
-  let params = useParams();
+import { useNavigate, useLocation } from "react-router-dom";
+function Adduser() {
+  const [localData, setlocalData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-   
-  console.log(location,"location_data");
-  // console.log(location.state[0].email,"location data");
-  const [locateData, setlocateData] = useState();
-  const nameClearButtonClick = useCallback(() => {
-  setName(location.state[0].id);
+  const myUserinfo = JSON.parse(localStorage.getItem("allUserInfo"));
+
+  useEffect(() => {
+    setlocalData([...myUserinfo])
+  }, []);
+
+  //console.log(localData,"Mylocaldata");
+
+  const companyClearButtonClick = useCallback(() => {
+    setCompany('');
   }, []);
   const userNameClearButtonClick = useCallback(() => {
     setUser('')
@@ -23,32 +27,65 @@ function Adduser(props) {
     setEmail('');
   }, [])
 
-  const [email, setEmail] = useState('');
-  const [names, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [userid, setUserId] = useState('');
   const [username, setUser] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [company, setCompany] = useState('');
 
   const handleEmailChange = useCallback((value) => setEmail(value), []);
-  const handleNamesChange = useCallback((value) => setName(value), []);
+  const handleCompanyChange = useCallback((value) => setCompany(value), []);
   const handlePhoneChange = useCallback((value) => setPhone(value), []);
   const handleUsernameChange = useCallback((value) => setUser(value), []);
 
-  const [info,setinfo]=useState({
-
-  })
-
+  useEffect(() => {
+    if (location.state != null) {
+      myUserinfo.map(usrInfo => {
+        if (location.state.id == usrInfo.id) {
+          setUserId(location.state.id);
+          setUser(usrInfo.username);
+          setEmail(usrInfo.email);
+          setCompany(usrInfo.company.name);
+          setPhone(usrInfo.phone);
+        }
+      })
+    }
+  }, [])
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    // add all the values to an object
-    // add this object into localStorage
-    localStorage.setItem("lastname", "Smith");
-    localStorage.getItem("lastname");
-    navigate('/', { state: true })
+    e.preventDefault();
+    //edit data    
+    if (location.state != null) {
+      if (location.state.id === userid) {
+        localData.map(updateUsr => {
+          if (updateUsr.id == userid) {
+            const usrUpdated = { id: updateUsr.id, username: username, email: email, phone: phone, company: { name: company } }
+            const tmp = []
+            localData.forEach(localusr => {
+              if (localusr.id == updateUsr.id) {
+                tmp.push(usrUpdated)
+                return
+              }
+              tmp.push(localusr)
+            })
+            localStorage.setItem("allUserInfo", JSON.stringify(tmp));
+          }
+        })
+      }
+    }
+    //Add Data
+    if (location.state == null) {
+      const NextId = localData.length;
+      const addUrs = { id: NextId + 1, username: username, email: email, phone: phone, company: { name: company } }
+      const tmp = []
+      localData.forEach(localusr => {
+        tmp.push(localusr)
+      })
+      tmp.push(addUrs)
+      localStorage.setItem("allUserInfo", JSON.stringify(tmp));
+    }
+    navigate("/", { state: true });
   }
-
-
-
   return (
     <div className="UserPage">
       <Page>
@@ -68,13 +105,13 @@ function Adduser(props) {
                       onClearButtonClick={userNameClearButtonClick}
                     />
                     <TextField
-                      value={names}
-                      onChange={handleNamesChange}
-                      label="Name"
-                      type="names"
+                      value={company}
+                      onChange={handleCompanyChange}
+                      label="Compmay"
+                      type="company"
                       autoComplete="off"
                       clearButton
-                      onClearButtonClick={nameClearButtonClick}
+                      onClearButtonClick={companyClearButtonClick}
                     />
                     <TextField
                       value={phone}
