@@ -7,7 +7,7 @@ function Home() {
   const [userData, setUserdata] = useState();
 
   useEffect(() => {
-    const locData=localStorage.getItem("allUserInfo")
+    const locData = localStorage.getItem("allUserInfo")
     if (location.state) {
       setUserdata(JSON.parse(locData));
       return
@@ -19,10 +19,11 @@ function Home() {
         localStorage.setItem("allUserInfo", JSON.stringify(data));
       });
   }, [])
+  //All Showing Data
   function showData(event) {
-    var rowId = event.target.parentNode.parentNode.id;
+    let rowId = event.target.parentNode.parentNode.id;
     //this gives id of tr whose button was clicked
-    var data = document.getElementById(rowId).querySelectorAll(".row-data");
+    let data = document.getElementById(rowId).querySelectorAll(".row-data");
     /*returns array of all elements with 
     "row-data" class within the row with given id*/
     let id = data[0].innerHTML;
@@ -31,6 +32,26 @@ function Home() {
     let phno = data[3].innerHTML;
     let company = data[4].innerHTML;
     navigate("/add", { state: { id: id, username: username, email: email, phno: phno, company: company } });
+  }
+  // Delete User Data
+  function deleteData(event) {
+    let rowId = event.target.parentNode.parentNode.id;
+    //this gives id of tr whose button was clicked
+    let data = document.getElementById(rowId).querySelectorAll(".row-data");
+    let delId = data[0].innerHTML;
+    userData.map(usrDelData => {
+      if (usrDelData.id == delId) {
+        const tmp = []
+        userData.forEach(localDelusr => {
+          if (localDelusr.id == delId) {
+            return
+          }
+          tmp.push(localDelusr);
+        })
+        localStorage.setItem("allUserInfo", JSON.stringify(tmp));
+        setUserdata(tmp)
+      }
+    })
   }
   return (
     <>
@@ -71,6 +92,7 @@ function Home() {
                       <i className="fa fa-pencil-square" />
                     </button>
                     <button className='delBtn btn btn-danger'
+                      onClick={(event) => deleteData(event)}
                       style={{ fontSize: "14px" }}>
                       <i className="fa fa-trash" />
                     </button>
