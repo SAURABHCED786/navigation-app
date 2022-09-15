@@ -63,48 +63,60 @@ function Adduser(props) {
     //validation
     if (!validUserName.test(username)) {
       setUsernameErr(true);
+    }else{
+      setUsernameErr(false)
     }
     if (!validEmail.test(email)) {
       setEmailErr(true);
+    }else{
+      setEmailErr(false);
     }
     if (!validMobile.test(phone)) {
       setMobNoErr(true);
+    }else{
+      setMobNoErr(false);
     }
     if (!validCompany.test(company)) {
       setCompanyErr(true);
+    }else{
+      setCompanyErr(false);
     }
 
-    //edit data    
-    if (location.state != null) {
-      if (location.state.id === userid) {
-        localData.map(updateUsr => {
-          if (updateUsr.id == userid) {
-            const usrUpdated = { id: updateUsr.id, username: username, email: email, phone: phone, company: { name: company } }
-            const tmp = []
-            localData.forEach(localusr => {
-              if (localusr.id == updateUsr.id) {
-                tmp.push(usrUpdated)
-                return
-              }
-              tmp.push(localusr)
-            })
-            localStorage.setItem("allUserInfo", JSON.stringify(tmp));
-          }
-        })
+    if (validUserName.test(username) && validEmail.test(email) && validMobile.test(phone) && validCompany.test(company)) {
+
+      //edit data    
+      if (location.state != null) {
+        if (location.state.id === userid) {
+          localData.map(updateUsr => {
+            if (updateUsr.id == userid) {
+              const usrUpdated = { id: updateUsr.id, username: username, email: email, phone: phone, company: { name: company } }
+              const tmp = []
+              localData.forEach(localusr => {
+                if (localusr.id == updateUsr.id) {
+                  tmp.push(usrUpdated)
+                  return
+                }
+                tmp.push(localusr)
+              })
+              localStorage.setItem("allUserInfo", JSON.stringify(tmp));
+            }
+          })
+        }
       }
+      //Add Data
+      if (location.state == null) {
+        const NextId = localData.length;
+        const addUrs = { id: NextId + 1, username: username, email: email, phone: phone, company: { name: company } }
+        const tmp = []
+        localData.forEach(localusr => {
+          tmp.push(localusr)
+        })
+        tmp.push(addUrs)
+        localStorage.setItem("allUserInfo", JSON.stringify(tmp));
+      }
+      navigate("/", { state: true });
     }
-    //Add Data
-    if (location.state == null) {
-      const NextId = localData.length;
-      const addUrs = { id: NextId + 1, username: username, email: email, phone: phone, company: { name: company } }
-      const tmp = []
-      localData.forEach(localusr => {
-        tmp.push(localusr)
-      })
-      tmp.push(addUrs)
-      localStorage.setItem("allUserInfo", JSON.stringify(tmp));
-    }
-    //navigate("/", { state: true });
+
   }
   return (
     <div className="UserPage">
