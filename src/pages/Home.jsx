@@ -122,7 +122,7 @@ function Home() {
                     <div style={{ padding: "20px" }}>
                       <Table id="dataTable" responsive>
                         <thead>
-                          <tr>
+                          <tr className="header">
                             <th>ID</th>
                             <th>Username</th>
                             <th>Email</th>
