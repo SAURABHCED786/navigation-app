@@ -108,7 +108,7 @@ function Home() {
               <Grid.Cell columnSpan={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
                 <Layout>
                   <Card>
-                    <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 4, lg: 3, xl: 3 }}>
+                    <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 6, lg: 12, xl: 12 }}>
                       <div className="filterData">
                         <TextField
                           label="Search By Contains"
@@ -120,7 +120,7 @@ function Home() {
                       </div>
                     </Grid.Cell>
                     <div style={{ padding: "20px" }}>
-                      <Table id="dataTable" responsive>
+                      <table id="dataTable" responsive>
                         <thead>
                           <tr className="header">
                             <th>ID</th>
@@ -171,7 +171,7 @@ function Home() {
                             <td style={{ textAlign: "center", padding: "16px", color: "red" }} colSpan={6}><b>{deletedmsg ? "Deleted" : ""}</b></td>
                           </tr>
                         </tfoot>
-                      </Table>
+                      </table>
                     </div>
                   </Card>
                 </Layout>

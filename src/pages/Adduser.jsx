@@ -166,8 +166,7 @@ function Adduser(props) {
                       onClearButtonClick={emailClearButtonClick}
                       helpText={
                         <span>
-                          We’ll use this email address to inform you on future changes to
-                          Polaris.
+                          We’ll use this email address to inform you please all details should be valid.
                         </span>
                       }
                     />
