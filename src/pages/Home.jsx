@@ -1,13 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, Layout, Page, Grid } from '@shopify/polaris';
+import { Card, Layout, Page, Grid, TextField } from '@shopify/polaris';
 import Table from 'react-bootstrap/Table';
-import React, { useEffect, useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../App.css';
 function Home() {
   const navigate = useNavigate();
   const location = useLocation();
   const [userData, setUserdata] = useState();
   const [deletedmsg, setDeletedMsg] = useState(false);
+  const [textFilterValue, setFilterValue] = useState('');
   useEffect(() => {
     const locData = localStorage.getItem("allUserInfo")
     if (location.state) {
@@ -21,6 +23,13 @@ function Home() {
         localStorage.setItem("allUserInfo", JSON.stringify(data));
       });
   }, [])
+  useEffect(() => {
+    if (textFilterValue) {
+      filterNow();
+    } else {
+      filterNow();
+    }
+  }, [textFilterValue])
   //All Showing Data
   function showData(event) {
     let rowId = event.target.parentNode.parentNode.id;
@@ -56,70 +65,121 @@ function Home() {
       }
     })
   }
+  // Filter Data Filter by Contains
+
+  const handleFilterFieldChange = useCallback(
+    (value) => setFilterValue(value),
+    [],
+  );
+
+  function filterNow() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = textFilterValue
+    filter = input.toUpperCase();
+    table = document.getElementById("dataTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      // td = tr[i].getElementsByTagName("td")[0];
+      let alltags = tr[i].getElementsByTagName("td");
+      let isFound = false;
+      for (let j = 0; j < alltags.length; j++) {
+        td = alltags[j];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            j = alltags.length;
+            isFound = true;
+          }
+        }
+      }
+      if (!isFound && tr[i].className !== "header") {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
   return (
     <>
-      <Page>
-        <Grid>
-          <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 12, xl: 12 }}>
-            <Layout>
-              <Card>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Username</th>
-                      <th>Email</th>
-                      <th>Phone Number</th>
-                      <th>Company</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userData &&
-                      userData.map((item, index) => {
-                        return (
-                          <tr id={index}>
-                            <td className='row-data'>
-                              {item.id}
-                            </td>
-                            <td className='row-data'>
-                              {item.username}
-                            </td>
-                            <td className='row-data'>
-                              {item.email}
-                            </td>
-                            <td className='row-data'>
-                              {item.phone}
-                            </td>
-                            <td className='row-data'>
-                              {item.company.name}
-                            </td>
-                            <td>
-                              <button className='editBtn btn btn-primary'
-                                onClick={(event) => { showData(event) }} style={{ fontSize: "14px" }}>
-                                <i className="fa fa-pencil-square" />
-                              </button>
-                              <button className='delBtn btn btn-danger'
-                                onClick={(event) => deleteData(event)}
-                                style={{ fontSize: "14px" }}>
-                                <i className="fa fa-trash" />
-                              </button>
-                            </td>
+      <Container>
+        <Page>
+          <div style={{ marginBottom: "100px" }}>
+            <Grid>
+              <Grid.Cell columnSpan={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+                <Layout>
+                  <Card>
+                    <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 4, lg: 3, xl: 3 }}>
+                      <div className="filterData">
+                        <TextField
+                          label="Search By Contains"
+                          value={textFilterValue}
+                          onChange={handleFilterFieldChange}
+                          placeholder="Filter Now"
+                          autoComplete="off"
+                        />
+                      </div>
+                    </Grid.Cell>
+                    <div style={{ padding: "20px" }}>
+                      <Table id="dataTable" responsive>
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                            <th>Action</th>
                           </tr>
-                        )
-                      })}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td style={{ textAlign: "center", padding: "16px", color: "red" }} colSpan={5}><b>{deletedmsg ? "Deleted" : ""}</b></td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </Card>
-            </Layout>
-          </Grid.Cell>
-        </Grid>
-      </Page>
+                        </thead>
+                        <tbody>
+                          {userData &&
+                            userData.map((item, index) => {
+                              return (
+                                <tr id={index}>
+                                  <td className='row-data'>
+                                    {item.id}
+                                  </td>
+                                  <td className='row-data'>
+                                    {item.username}
+                                  </td>
+                                  <td className='row-data'>
+                                    {item.email}
+                                  </td>
+                                  <td className='row-data'>
+                                    {item.phone}
+                                  </td>
+                                  <td className='row-data'>
+                                    {item.company.name}
+                                  </td>
+                                  <td>
+                                    <button className='editBtn btn btn-primary'
+                                      onClick={(event) => { showData(event) }} style={{ fontSize: "14px" }}>
+                                      <i className="fa fa-pencil-square" />
+                                    </button>
+                                    <button className='delBtn btn btn-danger'
+                                      onClick={(event) => deleteData(event)}
+                                      style={{ fontSize: "14px" }}>
+                                      <i className="fa fa-trash" />
+                                    </button>
+                                  </td>
+                                </tr>
+                              )
+                            })}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td style={{ textAlign: "center", padding: "16px", color: "red" }} colSpan={6}><b>{deletedmsg ? "Deleted" : ""}</b></td>
+                          </tr>
+                        </tfoot>
+                      </Table>
+                    </div>
+                  </Card>
+                </Layout>
+              </Grid.Cell>
+            </Grid>
+          </div>
+        </Page>
+      </Container>
     </>
   );
 }

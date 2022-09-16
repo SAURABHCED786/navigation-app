@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@shopify/polaris/build/esm/styles.css';
 import enTranslations from '@shopify/polaris/locales/en.json';
 import { AppProvider } from "@shopify/polaris";
+import Container from 'react-bootstrap/Container';
 import Header from "./pages/Header";
 import Footer from "./pages/Footer";
 import Dashboard from "./pages/Dashboard";
@@ -21,7 +22,7 @@ function App() {
       <div className="App">
         <Router>
           <Header />
-          <div className="container">
+          <Container>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/add" element={<Adduser name="Add" />} />
@@ -29,7 +30,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
-          </div>
+          </Container>
           <Footer />
         </Router>
       </div>

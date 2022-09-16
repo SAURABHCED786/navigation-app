@@ -1,4 +1,14 @@
-button.editBtn,button.delBtn {
+.errorMsg {
+  margin-top: 20px;
+}
+
+.filterData {
+  width: 50%;
+  display: inline-block;
+}
+
+button.editBtn,
+button.delBtn {
   padding: 2px 20px;
   border: 1px solid;
   border-radius: 5px;
@@ -43,12 +53,9 @@ button.editBtn,button.delBtn {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
 
-  to {
-    transform: rotate(360deg);
+/* @media only screen and (max-width: 600px) {
+  .userDatatable {
+    background-color: lightblue;
   }
-}
+} */

@@ -119,14 +119,14 @@ function Adduser(props) {
     <div className="UserPage">
       <Page>
         <Grid>
-          <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 12, xl: 12 }}>
+          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12 }}>
             <Layout>
               <Card>
-                {emailErr ? <p>Your email is invalid</p> : ""}
-                {usernaemErr ? <p>Your username is invalid</p> : " "}
-                {mobleNoErr ? <p>Your Mobile Number is invalid</p> : " "}
-                {companyErr ? <p>Your Company Name is invalid</p> : " "}
-                {console.log(emailErr, " ", usernaemErr, " ", mobleNoErr, " ", companyErr)}
+                {emailErr ? <p className='errorMsg'>Your email is invalid</p> : ""}
+                {usernaemErr ? <p className='errorMsg'>Your username is invalid</p> : " "}
+                {mobleNoErr ? <p className='errorMsg'>Your Mobile Number is invalid</p> : " "}
+                {companyErr ? <p className='errorMsg'>Your Company Name is invalid</p> : " "}
+
                 <div style={{ padding: "20px" }}>
                   <FormLayout>
                     <TextField
