@@ -73,28 +73,47 @@ function Home() {
   );
 
   function filterNow() {
+    // var input, filter, table, tr, td, i, txtValue;
+    // input = textFilterValue
+    // filter = input.toUpperCase();
+    // table = document.getElementById("dataTable");
+    // tr = table.getElementsByTagName("tr");
+    // for (i = 0; i < tr.length; i++) {
+    //   // td = tr[i].getElementsByTagName("td")[0];
+    //   let alltags = tr[i].getElementsByTagName("td");
+    //   let isFound = false;
+    //   for (let j = 0; j < alltags.length; j++) {
+    //     td = alltags[j];
+    //     if (td) {
+    //       txtValue = td.textContent || td.innerText;
+    //       if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    //         tr[i].style.display = "";
+    //         j = alltags.length;
+    //         isFound = true;
+    //       }
+    //     }
+    //   }
+    //   if (!isFound && tr[i].className !== "header") {
+    //     tr[i].style.display = "none";
+    //   }
+    // }
+
     var input, filter, table, tr, td, i, txtValue;
     input = textFilterValue
     filter = input.toUpperCase();
     table = document.getElementById("dataTable");
     tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-      // td = tr[i].getElementsByTagName("td")[0];
-      let alltags = tr[i].getElementsByTagName("td");
-      let isFound = false;
-      for (let j = 0; j < alltags.length; j++) {
-        td = alltags[j];
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-            j = alltags.length;
-            isFound = true;
-          }
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
         }
-      }
-      if (!isFound && tr[i].className !== "header") {
-        tr[i].style.display = "none";
       }
     }
   }
@@ -111,7 +130,7 @@ function Home() {
                     <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 6, lg: 12, xl: 12 }}>
                       <div className="filterData">
                         <TextField
-                          label="Search By Contains"
+                          label="Search By Username"
                           value={textFilterValue}
                           onChange={handleFilterFieldChange}
                           placeholder="Filter Now"

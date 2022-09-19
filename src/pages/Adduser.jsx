@@ -81,7 +81,7 @@ function Adduser(props) {
       setCompanyErr(false);
     }
     if (validUserName.test(username) && validEmail.test(email) && validMobile.test(phone) && validCompany.test(company)) {
-      //edit data    
+      //edit data         
       if (location.state != null) {
         if (location.state.id === userid) {
           localData.map(updateUsr => {
