@@ -1,5 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, Layout, Page, Grid, TextField } from '@shopify/polaris';
+import { Card, Layout, Page, Grid, TextField, Button } from '@shopify/polaris';
+import {
+  DeleteMajor, EditMajor
+} from '@shopify/polaris-icons';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import React, { useEffect, useState, useCallback } from 'react';
@@ -31,8 +34,8 @@ function Home() {
     }
   }, [textFilterValue])
   //All Showing Data
-  function showData(event) {
-    let rowId = event.target.parentNode.parentNode.id;
+  function showData(index) {
+    let rowId = index;
     //this gives id of tr whose button was clicked
     let data = document.getElementById(rowId).querySelectorAll(".row-data");
     /*returns array of all elements with 
@@ -41,12 +44,13 @@ function Home() {
     let username = data[1].innerHTML;
     let email = data[2].innerHTML;
     let phno = data[3].innerHTML;
+    console.log(phno, "myphno");
     let company = data[4].innerHTML;
     navigate("/add", { state: { id: id, username: username, email: email, phno: phno, company: company }, Edit: "Edit" });
   }
   // Delete User Data
-  function deleteData(event) {
-    let rowId = event.target.parentNode.parentNode.id;
+  function deleteData(index) {
+    let rowId = index;
     //this gives id of tr whose button was clicked
     let data = document.getElementById(rowId).querySelectorAll(".row-data");
     let delId = data[0].innerHTML;
@@ -103,7 +107,7 @@ function Home() {
     filter = input.toUpperCase();
     table = document.getElementById("dataTable");
     tr = table.getElementsByTagName("tr");
-  
+
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
       td = tr[i].getElementsByTagName("td")[1];
@@ -139,7 +143,7 @@ function Home() {
                       </div>
                     </Grid.Cell>
                     <div style={{ padding: "20px" }}>
-                      <table id="dataTable" responsive>
+                      <table id="dataTable" responsive='true'>
                         <thead>
                           <tr className="header">
                             <th>ID</th>
@@ -153,6 +157,11 @@ function Home() {
                         <tbody>
                           {userData &&
                             userData.map((item, index) => {
+                              // Real Mobile Number 
+                              let onlyNumbers = item.phone.replace(/[^\d]/g, '');
+                              let limitToTen = onlyNumbers.slice(0, 10);
+                              // Real Company Namebm
+                              let CompanyName = item.company.name.replace('-', ' ');
                               return (
                                 <tr id={index}>
                                   <td className='row-data'>
@@ -165,23 +174,25 @@ function Home() {
                                     {item.email}
                                   </td>
                                   <td className='row-data'>
-                                    {item.phone}
+                                    {limitToTen}
                                   </td>
                                   <td className='row-data'>
-                                    {item.company.name}
+                                    {CompanyName}
                                   </td>
                                   <td>
-                                    <button className='editBtn btn btn-primary'
-                                      onClick={(event) => { showData(event) }} style={{ fontSize: "14px" }}>
-                                      {/* <i className="fa fa-pencil-square" /> */}
-                                      Edit
-                                    </button>
-                                    <button className='delBtn btn btn-danger'
-                                      onClick={(event) => deleteData(event)}
-                                      style={{ fontSize: "14px" }}>
-                                      {/* <i className="fa fa-trash" /> */}
-                                      Del
-                                    </button>
+                                    <div style={{ margin: "1px", color: "#d92104" }}>
+                                      <Button
+                                        onClick={() => { showData(index) }}
+                                        icon={EditMajor}
+                                      >
+                                      </Button>
+                                      &nbsp;&nbsp;
+                                      <Button
+                                        onClick={() => deleteData(index)}
+                                        icon={DeleteMajor} monochrome outline
+                                      >
+                                      </Button>
+                                    </div>
                                   </td>
                                 </tr>
                               )

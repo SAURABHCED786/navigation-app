@@ -38,10 +38,18 @@ function Adduser(props) {
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
 
-  const handleEmailChange = useCallback((value) => setEmail(value), []);
-  const handleCompanyChange = useCallback((value) => setCompany(value), []);
-  const handlePhoneChange = useCallback((value) => setPhone(value), []);
-  const handleUsernameChange = useCallback((value) => setUser(value), []);
+  const handleEmailChange = useCallback((value) => {
+    setEmail(value)
+  }, []);
+  const handleCompanyChange = useCallback((value) => {
+    setCompany(value)
+  }, []);
+  const handlePhoneChange = useCallback((value) => {
+    setPhone(value)
+  }, []);
+  const handleUsernameChange = useCallback((value) => {
+    setUser(value)
+  }, []);
 
   useEffect(() => {
     if (location.state != null) {
@@ -51,15 +59,17 @@ function Adduser(props) {
           setUserId(location.state.id);
           setUser(usrInfo.username);
           setEmail(usrInfo.email);
-          setCompany(usrInfo.company.name);
-          setPhone(usrInfo.phone);
+          let CompanyName = usrInfo.company.name.replace('-', ' ');
+          setCompany(CompanyName);
+          let onlyNumbers = usrInfo.phone.replace(/[^\d]/g, '');
+          let limitToTen = onlyNumbers.slice(0, 10);
+          setPhone(limitToTen);
         }
       })
     }
   }, [])
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //validation
+
+  useEffect(() => {
     if (!validUserName.test(username)) {
       setUsernameErr(true);
     } else {
@@ -80,8 +90,14 @@ function Adduser(props) {
     } else {
       setCompanyErr(false);
     }
+  }, [username, email, phone, company])
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //validation
+
     if (validUserName.test(username) && validEmail.test(email) && validMobile.test(phone) && validCompany.test(company)) {
-      //edit data         
+      //edit data       
       if (location.state != null) {
         if (location.state.id === userid) {
           localData.map(updateUsr => {
@@ -122,11 +138,6 @@ function Adduser(props) {
           <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12 }}>
             <Layout>
               <Card>
-                {emailErr ? <p className='errorMsg'>Your email is invalid</p> : ""}
-                {usernaemErr ? <p className='errorMsg'>Your username is invalid</p> : " "}
-                {mobleNoErr ? <p className='errorMsg'>Your Mobile Number is invalid</p> : " "}
-                {companyErr ? <p className='errorMsg'>Your Company Name is invalid</p> : " "}
-
                 <div style={{ padding: "20px" }}>
                   <FormLayout>
                     <TextField
@@ -137,15 +148,25 @@ function Adduser(props) {
                       autoComplete="off"
                       clearButton
                       onClearButtonClick={userNameClearButtonClick}
+                      helpText={
+                        <span>
+                          {usernaemErr ? <p className='errorMsg'>Your username is invalid</p> : " "}
+                        </span>
+                      }
                     />
                     <TextField
                       value={company}
                       onChange={handleCompanyChange}
-                      label="Compmay"
+                      label="Company"
                       type="company"
                       autoComplete="off"
                       clearButton
                       onClearButtonClick={companyClearButtonClick}
+                      helpText={
+                        <span>
+                          {companyErr ? <p className='errorMsg'>Your Company Name is invalid</p> : " "}
+                        </span>
+                      }
                     />
                     <TextField
                       value={phone}
@@ -155,6 +176,11 @@ function Adduser(props) {
                       autoComplete="off"
                       clearButton
                       onClearButtonClick={phoneClearButtonClick}
+                      helpText={
+                        <span>
+                          {mobleNoErr ? <p className='errorMsg'>Your Mobile Number is invalid</p> : " "}
+                        </span>
+                      }
                     />
                     <TextField
                       value={email}
@@ -167,6 +193,7 @@ function Adduser(props) {
                       helpText={
                         <span>
                           We’ll use this email address to inform you please all details should be valid.
+                          {emailErr ? <p className='errorMsg'>Your email is invalid</p> : ""}
                         </span>
                       }
                     />
