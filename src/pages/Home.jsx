@@ -173,12 +173,14 @@ function Home() {
                                   <td>
                                     <button className='editBtn btn btn-primary'
                                       onClick={(event) => { showData(event) }} style={{ fontSize: "14px" }}>
-                                      <i className="fa fa-pencil-square" />
+                                      {/* <i className="fa fa-pencil-square" /> */}
+                                      Edit
                                     </button>
                                     <button className='delBtn btn btn-danger'
                                       onClick={(event) => deleteData(event)}
                                       style={{ fontSize: "14px" }}>
-                                      <i className="fa fa-trash" />
+                                      {/* <i className="fa fa-trash" /> */}
+                                      Del
                                     </button>
                                   </td>
                                 </tr>
