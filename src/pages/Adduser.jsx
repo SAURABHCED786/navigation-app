@@ -141,7 +141,7 @@ function Adduser(props) {
             <Layout>
               <Card>
                 <div className="backBtn">
-                  <Button onClick={() => navigate(-1)} size="slim">Go Back</Button>
+                  <Button size="slim" onClick={handleSubmit}>{EditStatus ? "Go Back" : props.name}</Button>
                 </div>
                 <div style={{ padding: "20px" }}>
                   <FormLayout>
