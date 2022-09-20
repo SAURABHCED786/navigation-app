@@ -164,7 +164,7 @@ function Home() {
                               let CompanyName = item.company.name.replace('-', ' ');
                               let properEmail = item.email.toLowerCase();
                               return (
-                                <tr id={index1}>
+                                <tr id={index1} key={index1}>
                                   <td className='row-data'>
                                     {item.id}
                                   </td>

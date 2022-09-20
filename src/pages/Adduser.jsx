@@ -140,6 +140,9 @@ function Adduser(props) {
           <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12 }}>
             <Layout>
               <Card>
+                <div className="backBtn">
+                  <Button onClick={() => navigate(-1)} size="slim">Go Back</Button>
+                </div>
                 <div style={{ padding: "20px" }}>
                   <FormLayout>
                     <TextField
