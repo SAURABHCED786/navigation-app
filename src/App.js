@@ -24,8 +24,9 @@ function App() {
           <Header />
           <Container>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route exact path="/" element={<Home />} />
               <Route path="/add" element={<Adduser name="Add" />} />
+              <Route path="/:id" element={<Adduser />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
               <Route path="/dashboard" element={<Dashboard />} />

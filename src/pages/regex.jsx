@@ -4,8 +4,7 @@ export const validUserName = new RegExp(
   '[^\s]'
 );
 export const validEmail = new RegExp(
-  '^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$'
-  // "^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 );
 
 export const validMobile = new RegExp(

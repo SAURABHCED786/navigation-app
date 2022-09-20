@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { Button, Card, FormLayout, Layout, Page, Grid, TextField } from '@shopify/polaris';
 import { useState, useCallback } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { validUserName, validEmail, validMobile, validCompany } from './regex'
+
 function Adduser(props) {
   const [emailErr, setEmailErr] = useState(false);
   const [usernaemErr, setUsernameErr] = useState(false);
@@ -40,15 +41,36 @@ function Adduser(props) {
 
   const handleEmailChange = useCallback((value) => {
     setEmail(value)
+    if (!validEmail.exec(value)) {
+      setEmailErr(true);
+    } else {
+      setEmailErr(false);
+    }
   }, []);
   const handleCompanyChange = useCallback((value) => {
     setCompany(value)
+    if (!validCompany.test(value)) {
+      setCompanyErr(true);
+    } else {
+      setCompanyErr(false);
+    }
   }, []);
   const handlePhoneChange = useCallback((value) => {
     setPhone(value)
+    if (!validMobile.test(value)) {
+      setMobNoErr(true);
+    } else {
+      setMobNoErr(false);
+    }
   }, []);
+
   const handleUsernameChange = useCallback((value) => {
     setUser(value)
+    if (!validUserName.test(value)) {
+      setUsernameErr(true);
+    } else {
+      setUsernameErr(false)
+    }
   }, []);
 
   useEffect(() => {
@@ -71,26 +93,26 @@ function Adduser(props) {
   }, []);
 
   useEffect(() => {
-    if (!validUserName.test(username)) {
-      setUsernameErr(true);
-    } else {
-      setUsernameErr(false)
-    }
-    if (!validEmail.test(email)) {
-      setEmailErr(true);
-    } else {
-      setEmailErr(false);
-    }
-    if (!validMobile.test(phone)) {
-      setMobNoErr(true);
-    } else {
-      setMobNoErr(false);
-    }
-    if (!validCompany.test(company)) {
-      setCompanyErr(true);
-    } else {
-      setCompanyErr(false);
-    }
+    // if (!validUserName.test(username)) {
+    //   setUsernameErr(true);
+    // } else {
+    //   setUsernameErr(false)
+    // }
+    // if (!validEmail.exec(email)) {
+    //   setEmailErr(true);
+    // } else {
+    //   setEmailErr(false);
+    // }
+    // if (!validMobile.test(phone)) {
+    //   setMobNoErr(true);
+    // } else {
+    //   setMobNoErr(false);
+    // }
+    // if (!validCompany.test(company)) {
+    //   setCompanyErr(true);
+    // } else {
+    //   setCompanyErr(false);
+    // }
   }, [username, email, phone, company])
 
 
@@ -133,6 +155,24 @@ function Adduser(props) {
       navigate("/", { state: true });
     }
   }
+  function goBack() {
+    localData.map(updateUsr => {
+      if (updateUsr.id == userid) {
+        const usrUpdated = { id: updateUsr.id, username: username, email: email, phone: phone, company: { name: company } }
+        const tmp = []
+        localData.forEach(localusr => {
+          if (localusr.id == updateUsr.id) {
+            tmp.push(usrUpdated)
+            return
+          }
+          tmp.push(localusr)
+        })
+        localStorage.setItem("allUserInfo", JSON.stringify(tmp));
+      }
+      navigate("/", { state: true });
+    })
+
+  }
   return (
     <div className="UserPage">
       <Page>
@@ -141,7 +181,7 @@ function Adduser(props) {
             <Layout>
               <Card>
                 <div className="backBtn">
-                  <Button size="slim" onClick={handleSubmit}>{EditStatus ? "Go Back" : props.name}</Button>
+                  <Button size="slim" onClick={goBack}>Go Back</Button>
                 </div>
                 <div style={{ padding: "20px" }}>
                   <FormLayout>

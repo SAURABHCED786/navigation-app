@@ -46,7 +46,7 @@ function Home() {
     let phno = data[3].innerHTML;
     console.log(phno, "myphno");
     let company = data[4].innerHTML;
-    navigate("/add", { state: { id: id, username: username, email: email, phno: phno, company: company }, Edit: "Edit" });
+    navigate("/" + id, { state: { id: id, username: username, email: email, phno: phno, company: company }, Edit: "Edit" });
   }
   // Delete User Data
   function deleteData(index) {
@@ -182,12 +182,14 @@ function Home() {
                                   </td>
                                   <td className="row-data">
                                     <div style={{ margin: "1px", color: "#d92104" }}>
+                                      {/* Edit Button */}
                                       <Button
                                         onClick={() => { showData(index1) }}
                                         icon={EditMajor}
                                       >
                                       </Button>
                                       &nbsp;&nbsp;
+                                      {/* Delete Button */}
                                       <Button
                                         onClick={() => deleteData(index1)}
                                         icon={DeleteMajor} monochrome outline
