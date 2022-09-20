@@ -58,7 +58,8 @@ function Adduser(props) {
         if (location.state.id == usrInfo.id) {
           setUserId(location.state.id);
           setUser(usrInfo.username);
-          setEmail(usrInfo.email);
+          let properEmail = usrInfo.email.toLowerCase();
+          setEmail(properEmail);
           let CompanyName = usrInfo.company.name.replace('-', ' ');
           setCompany(CompanyName);
           let onlyNumbers = usrInfo.phone.replace(/[^\d]/g, '');

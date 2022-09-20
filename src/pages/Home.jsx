@@ -54,7 +54,7 @@ function Home() {
     //this gives id of tr whose button was clicked
     let data = document.getElementById(rowId).querySelectorAll(".row-data");
     let delId = data[0].innerHTML;
-    userData.map(usrDelData => {
+    userData.forEach((usrDelData) => {
       if (usrDelData.id == delId) {
         const tmp = []
         userData.forEach(localDelusr => {
@@ -156,14 +156,15 @@ function Home() {
                         </thead>
                         <tbody>
                           {userData &&
-                            userData.map((item, index) => {
+                            userData.map((item, index1) => {
                               // Real Mobile Number 
                               let onlyNumbers = item.phone.replace(/[^\d]/g, '');
                               let limitToTen = onlyNumbers.slice(0, 10);
                               // Real Company Namebm
                               let CompanyName = item.company.name.replace('-', ' ');
+                              let properEmail = item.email.toLowerCase();
                               return (
-                                <tr id={index}>
+                                <tr id={index1}>
                                   <td className='row-data'>
                                     {item.id}
                                   </td>
@@ -171,7 +172,7 @@ function Home() {
                                     {item.username}
                                   </td>
                                   <td className='row-data'>
-                                    {item.email}
+                                    {properEmail}
                                   </td>
                                   <td className='row-data'>
                                     {limitToTen}
@@ -179,16 +180,16 @@ function Home() {
                                   <td className='row-data'>
                                     {CompanyName}
                                   </td>
-                                  <td>
+                                  <td className="row-data">
                                     <div style={{ margin: "1px", color: "#d92104" }}>
                                       <Button
-                                        onClick={() => { showData(index) }}
+                                        onClick={() => { showData(index1) }}
                                         icon={EditMajor}
                                       >
                                       </Button>
                                       &nbsp;&nbsp;
                                       <Button
-                                        onClick={() => deleteData(index)}
+                                        onClick={() => deleteData(index1)}
                                         icon={DeleteMajor} monochrome outline
                                       >
                                       </Button>
