@@ -9,10 +9,10 @@ function Footer() {
 
         <div className="footer-right">
 
-          <a href='javascript:void(0);'><i className="fa fa-facebook-official"></i></a>
-          <a href='javascript:void(0);'><i className="fa fa-twitter"></i></a>
-          <a href='javascript:void(0);'><i className="fa fa-linkedin"></i></a>
-          <a href='javascript:void(0);'><i className="fa fa-github"></i></a>
+          <a href='#'><i className="fa fa-facebook-official"></i></a>
+          <a href='#'><i className="fa fa-twitter"></i></a>
+          <a href='#'><i className="fa fa-linkedin"></i></a>
+          <a href='#'><i className="fa fa-github"></i></a>
 
         </div>
 

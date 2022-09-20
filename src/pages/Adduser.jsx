@@ -67,7 +67,7 @@ function Adduser(props) {
         }
       })
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (!validUserName.test(username)) {
@@ -91,6 +91,7 @@ function Adduser(props) {
       setCompanyErr(false);
     }
   }, [username, email, phone, company])
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -150,7 +151,7 @@ function Adduser(props) {
                       onClearButtonClick={userNameClearButtonClick}
                       helpText={
                         <span>
-                          {usernaemErr ? <p className='errorMsg'>Your username is invalid</p> : " "}
+                          {usernaemErr ? <p className='errorMsg'>Enter Valid Username</p> : " "}
                         </span>
                       }
                     />
@@ -164,7 +165,7 @@ function Adduser(props) {
                       onClearButtonClick={companyClearButtonClick}
                       helpText={
                         <span>
-                          {companyErr ? <p className='errorMsg'>Your Company Name is invalid</p> : " "}
+                          {companyErr ? <p className='errorMsg'>Enter Valid Company Name</p> : " "}
                         </span>
                       }
                     />
@@ -178,7 +179,7 @@ function Adduser(props) {
                       onClearButtonClick={phoneClearButtonClick}
                       helpText={
                         <span>
-                          {mobleNoErr ? <p className='errorMsg'>Your Mobile Number is invalid</p> : " "}
+                          {mobleNoErr ? <p className='errorMsg'>Enter Valid Phone Number</p> : " "}
                         </span>
                       }
                     />
@@ -193,7 +194,7 @@ function Adduser(props) {
                       helpText={
                         <span>
                           We’ll use this email address to inform you please all details should be valid.
-                          {emailErr ? <p className='errorMsg'>Your email is invalid</p> : ""}
+                          {emailErr ? <p className='errorMsg'>Enter Valid Email Address.</p> : ""}
                         </span>
                       }
                     />
