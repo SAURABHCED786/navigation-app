@@ -12,7 +12,7 @@ function Header() {
       <div className="navigationHeading">
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Container>
-            <Navbar.Brand as={Link} to="/">Navigation App</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/">Navigation Todo App</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto">

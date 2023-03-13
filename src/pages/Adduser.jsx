@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Button, Card, FormLayout, Layout, Page, Grid, TextField } from '@shopify/polaris';
 import { useState, useCallback } from 'react';
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { validUserName, validEmail, validMobile, validCompany } from './regex'
 
 function Adduser(props) {
   const [emailErr, setEmailErr] = useState(false);
   const [usernaemErr, setUsernameErr] = useState(false);
+  const [nameErr, setNameErr] = useState(false);
   const [mobleNoErr, setMobNoErr] = useState(false);
   const [companyErr, setCompanyErr] = useState(false);
   const [localData, setlocalData] = useState([]);
@@ -18,13 +19,16 @@ function Adduser(props) {
     setlocalData([...myUserinfo])
   }, []);
 
-  //console.log(localData,"Mylocaldata");
+  //console.log(location,"Mylocaldata");
 
   const companyClearButtonClick = useCallback(() => {
     setCompany('');
   }, []);
   const userNameClearButtonClick = useCallback(() => {
     setUser('')
+  }, []);
+  const nameClearButtonClick = useCallback(() => {
+    setName('')
   }, []);
   const phoneClearButtonClick = useCallback(() => {
     setPhone('')
@@ -35,6 +39,7 @@ function Adduser(props) {
 
   const [userid, setUserId] = useState('');
   const [username, setUser] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
@@ -72,14 +77,23 @@ function Adduser(props) {
       setUsernameErr(false)
     }
   }, []);
+  const handleNameChange = useCallback((value) => {
+    setName(value)
+    if (!validUserName.test(value)) {
+      setNameErr(true);
+    } else {
+      setNameErr(false)
+    }
+  }, []);
 
   useEffect(() => {
     if (location.state != null) {
       setEditStatus(true)
-      myUserinfo.map(usrInfo => {
-        if (location.state.id == usrInfo.id) {
+      myUserinfo.forEach(usrInfo => {
+        if (location.state.id === usrInfo.id) {
           setUserId(location.state.id);
           setUser(usrInfo.username);
+          setName(usrInfo.name)
           let properEmail = usrInfo.email.toLowerCase();
           setEmail(properEmail);
           let CompanyName = usrInfo.company.name.replace('-', ' ');
@@ -92,44 +106,21 @@ function Adduser(props) {
     }
   }, []);
 
-  useEffect(() => {
-    // if (!validUserName.test(username)) {
-    //   setUsernameErr(true);
-    // } else {
-    //   setUsernameErr(false)
-    // }
-    // if (!validEmail.exec(email)) {
-    //   setEmailErr(true);
-    // } else {
-    //   setEmailErr(false);
-    // }
-    // if (!validMobile.test(phone)) {
-    //   setMobNoErr(true);
-    // } else {
-    //   setMobNoErr(false);
-    // }
-    // if (!validCompany.test(company)) {
-    //   setCompanyErr(true);
-    // } else {
-    //   setCompanyErr(false);
-    // }
-  }, [username, email, phone, company])
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
     //validation
 
-    if (validUserName.test(username) && validEmail.test(email) && validMobile.test(phone) && validCompany.test(company)) {
+    if (validUserName.test(username) && validUserName.test(name) && validEmail.test(email) && validMobile.test(phone) && validCompany.test(company)) {
       //edit data       
       if (location.state != null) {
         if (location.state.id === userid) {
-          localData.map(updateUsr => {
-            if (updateUsr.id == userid) {
-              const usrUpdated = { id: updateUsr.id, username: username, email: email, phone: phone, company: { name: company } }
+          localData.forEach(updateUsr => {
+            if (updateUsr.id === userid) {
+              const usrUpdated = { id: updateUsr.id, username: username, name: name, email: email, phone: phone, company: { name: company } }
               const tmp = []
               localData.forEach(localusr => {
-                if (localusr.id == updateUsr.id) {
+                if (localusr.id === updateUsr.id) {
                   tmp.push(usrUpdated)
                   return
                 }
@@ -142,9 +133,10 @@ function Adduser(props) {
       }
       //Add Data
       if (location.state == null) {
-        //const NextId = localData.length;
-        const NextId = Math.floor(Math.random() * 999) + 1;
-        const addUrs = { id: NextId + 1, username: username, email: email, phone: phone, company: { name: company } }
+        const NextId = localData.length;
+        console.log(NextId, "nexxxxx")
+        // const NextId = Math.floor(Math.random() * 999) + 1;
+        const addUrs = { id: NextId + 1, username: username, name: name, email: email, phone: phone, company: { name: company } }
         const tmp = []
         localData.forEach(localusr => {
           tmp.push(localusr)
@@ -156,12 +148,14 @@ function Adduser(props) {
     }
   }
   function goBack() {
-    localData.map(updateUsr => {
-      if (updateUsr.id == userid) {
-        const usrUpdated = { id: updateUsr.id, username: username, email: email, phone: phone, company: { name: company } }
+    localData.forEach(updateUsr => {
+      if (updateUsr.id === userid) {
+        let onlyNumbers = updateUsr.phone.replace(/[^\d]/g, '');
+        let limitToTen = onlyNumbers.slice(0, 10);
+        const usrUpdated = { id: updateUsr.id, username: updateUsr.username, name: updateUsr.name, email: updateUsr.email, phone: limitToTen, company: { name: updateUsr.company.name } }
         const tmp = []
         localData.forEach(localusr => {
-          if (localusr.id == updateUsr.id) {
+          if (localusr.id === updateUsr.id) {
             tmp.push(usrUpdated)
             return
           }
@@ -196,6 +190,20 @@ function Adduser(props) {
                       helpText={
                         <span>
                           {usernaemErr ? <p className='errorMsg'>Enter Valid Username</p> : " "}
+                        </span>
+                      }
+                    />
+                    <TextField
+                      value={name}
+                      label="User Name"
+                      onChange={handleNameChange}
+                      type='username'
+                      autoComplete="off"
+                      clearButton
+                      onClearButtonClick={nameClearButtonClick}
+                      helpText={
+                        <span>
+                          {nameErr ? <p className='errorMsg'>Enter Valid Name</p> : " "}
                         </span>
                       }
                     />
